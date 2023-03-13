@@ -47,7 +47,7 @@ func main() {
 	}
 
 	toAddress := common.HexToAddress("0x9dbF2c75A2B35120438e5EBe89dABd3672142843")
-	tokenAddress := common.HexToAddress("0x42d0b4BcB22A19bff11462fD4b5e0BC48a404ECe")
+	tokenAddress := common.HexToAddress("0x656782f37060476bbb4cC091bda8D5a3F8755251")
 
 	transferFnSignature := []byte("transfer(address,uint256)")
 	hash := sha3.NewLegacyKeccak256()
@@ -76,30 +76,32 @@ func main() {
 	})
 	if err != nil {
 		log.Fatal(err)
+		//gasLimit = 300000
 	}
 	//gasLimit := uint64(400000)
 	fmt.Println(gasLimit) // 23256
 
-	//tx := types.NewTransaction(nonce, tokenAddress, value, gasLimit, gasPrice, data)
-	txdata := types.LegacyTx{
-		Nonce:    nonce,
-		GasPrice: gasPrice,
-		Gas:      gasLimit,
-		To:       &tokenAddress,
-		Value:    value,
-		Data:     data,
-		V:        nil,
-		R:        nil,
-		S:        nil,
-	}
-	tx := types.NewTx(&txdata)
+	tx := types.NewTransaction(nonce, tokenAddress, value, gasLimit, gasPrice, data)
+	//txdata := types.LegacyTx{
+	//	Nonce:    nonce,
+	//	GasPrice: gasPrice,
+	//	Gas:      gasLimit,
+	//	To:       &tokenAddress,
+	//	Value:    value,
+	//	Data:     data,
+	//	V:        nil,
+	//	R:        nil,
+	//	S:        nil,
+	//}
+	//tx := types.NewTx(&txdata)
 
 	chainID, err := client.NetworkID(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), privateKey)
+	//signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), privateKey)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {
 		log.Fatal(err)
 	}
