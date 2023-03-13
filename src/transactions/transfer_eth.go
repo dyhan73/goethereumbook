@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	client, err := ethclient.Dial("HTTP://127.0.0.1:8545")
+	client, err := ethclient.Dial("http://127.0.0.1:8545")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	value := big.NewInt(1000000000000000000) // in wei (1 eth)
-	gasLimit := uint64(21000)                // in units
+	gasLimit := uint64(210000)               // in units
 	gasPrice, err := client.SuggestGasPrice(context.Background())
 	if err != nil {
 		log.Fatal(err)
@@ -64,7 +64,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), privateKey)
 	if err != nil {
 		log.Fatal(err)
 	}
